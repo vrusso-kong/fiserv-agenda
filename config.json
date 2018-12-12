@@ -1,0 +1,44 @@
+{
+    "workshopSubject":"PACE",
+    "workshopHomepage":"agenda.md",
+    "modules": [
+    {
+        "type": "concepts",
+        "content": [
+            {
+            "name":"Pivotal Education vs Workshop",
+            "filename":"fiserv-cs-workshop/education-slide"
+            },
+            {
+                "name":"Cloud Native Platform",
+                "filename":"fiserv-cs-workshop/cloud-native-slide"
+            },
+            {
+                "name":"PCF Overview",
+                "filename":"fiserv-cs-workshop/pcf-overview-slide"
+            },
+            {
+                "name":"App Transformation",
+                "filename":"fiserv-cs-workshop/apptx-slide"
+            }
+        ]
+    },
+    {
+        "type": "demos",
+        "content": [
+            {
+                "name":"Environment Setup",
+                "filename":"fiserv-cs-workshop/lab_setup"
+            },
+            {
+            "name":"The Quotes Service",
+            "filename":"fiserv-cs-workshop/lab_pushquote"
+            },
+            {
+                "name":"The Other Services",
+                "filename":"fiserv-cs-workshop/lab_pushall"
+            }
+        ]
+    }
+  ]
+}

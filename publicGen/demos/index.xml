@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Demos on Pivotal Workshop</title>
+    <link>/demos/</link>
+    <description>Recent content in Demos on Pivotal Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="/demos/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>/demos/lab_setup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/demos/lab_setup/</guid>
+      <description>Environment Setup In this exercise, we will be setting up the environment and all the tools required.
+It assumes you are running Linux or MacOS, although it is possible to configure on Windows too.
+If you are in a Pivotal workshop and don&amp;rsquo;t want to install and configure these tools in your laptop, ask for the VM which has all required tools already installed. However, you&amp;rsquo;ll still have to provide credentials/accounts for git and Pivotal Web Services.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/demos/lab_pushquote/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/demos/lab_pushquote/</guid>
+      <description>Quotes Service For this lab we have provided most of the code that makes up the Quote service, while leaving a skeleton of the getQuotes method in the controller to be completed.
+Go ahead and open the quotes-service project in your favorite IDE and navitgate down to the directory src/main/java/io/pivotal/quotes. Here you can see the pieces that make up the Quotes Service we are going to edit the QuoteV1Controller.java.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/demos/lab_pushall/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/demos/lab_pushall/</guid>
+      <description>The Other Services In this exercise, we will be deploying all the applications in the project to the cloud and create all required services. For each of these services we will examine their manifests before we push.
+1. Quote service We have already deployed the quote service in the previous lab, so nothing to do here.
+2. Accounts service Navigate to the accounts-service directory, run the gradle wrapper assemble command, then cf push.</description>
+    </item>
+    
+  </channel>
+</rss>

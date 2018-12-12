@@ -1,0 +1,92 @@
+[
+{
+	"uri": "/workshop/",
+	"title": "PACE Workshop",
+	"tags": [],
+	"description": "",
+	"content": " Welcome the Cloud Native Workshop for Fiserv\nAgenda Day One  9:00 - Coffee and Bagels and Introductions 9:30 - Pivotal Education vs Workshops 10:00 - Platform with a Capital `P` 11:00 - Going Cloud Native with Java on PCF 12:00 - What\u0026rsquo;s happening at Fiserv?  Platform + managed services Platform + external services Getting help  1:00 - Lunch 2:00 - Approaches to App Tx  App Assessment To Docker or not to Docker Slaying the Fire-Breathing Monolith  3:00 - PCF Demos  Basics of deployment CI/CD Monitoring/Troubleshooting apps  4:30 - Retro  Day Two  9:00 - Coffee and Bagels 9:30 - Spring Annotations for Cloud Native Apps (Hands on)  Building a controller App Deployment on PCF Cloud Native Config Service Discovery Spring Cloud Gateway  Rest of day - Review the current station  "
+},
+{
+	"uri": "/concepts/",
+	"title": "Concepts",
+	"tags": [],
+	"description": "",
+	"content": " Concepts Learn the basics, understand architectures, and fill-in the core-concepts behind the workshop.\n"
+},
+{
+	"uri": "/demos/",
+	"title": "Demos",
+	"tags": [],
+	"description": "",
+	"content": " Demos Build architectures, and test the core-concepts behind the workshop.\n"
+},
+{
+	"uri": "/concepts/education-slide/",
+	"title": "",
+	"tags": [],
+	"description": "",
+	"content": "\n "
+},
+{
+	"uri": "/demos/lab_setup/",
+	"title": "",
+	"tags": [],
+	"description": "",
+	"content": " Environment Setup In this exercise, we will be setting up the environment and all the tools required.\nIt assumes you are running Linux or MacOS, although it is possible to configure on Windows too.\nIf you are in a Pivotal workshop and don\u0026rsquo;t want to install and configure these tools in your laptop, ask for the VM which has all required tools already installed. However, you\u0026rsquo;ll still have to provide credentials/accounts for git and Pivotal Web Services.\n1. Java You\u0026rsquo;ll need Java 8.\n2. git install You\u0026rsquo;ll need the git CLI in order to clone and use the code in this repository.\nFollow the instructions here to install and configure the git CLI on your host.\n3. Cloud Foundry We will be using Fiserv\u0026rsquo;s own installation of PCF. If you have your login credentials we will use them in a minute, if you need them we will get some.\n4. Cloud Foundry CLI The Cloud Foundry command line interface is an easy way to interact with instances of Cloud Foundry.\nYou can obtain the CLI for multiple OS here\n5. Cloning the repository Clone the GIT repository to your local machine. On the command line issue the following command:\ngit clone https://github.com/vrusso-pivotal/fiserv-workshop.git  This command will copy the code in the repository to your local machine, creating a directory named fiserv-workshop. All actions will now be done inside this directory.\nOnce you have cloned the repository, it is important to build it to create the application artifacts.\nThe projects use gradle as the build tool with gradle wrapper. Thus, all it is required to build all the microservices is:\n./gradlew assemble  6. Login to Cloud Foundry Using your PCF credentials run the following command on the command line\ncf login  When prompted enter your email (login) and password. There should be a known org and space to be used for this workshop, go ahead and select those when prompted.\n7. Creating the services Now that you hav logged into Cloud Foundry, we want to begin to install a few services that we will be using later. Use the marketplace command to see the services that you can install\ncf marketplace  The first column contains the names of the services, we want Service Registry, Circuit Breaker Dashboard, and MySQL. The second column is the plan, generally speaking each service will have a free plan, we will be using that.\nWe have the mareketplace name of the service from the first column and the plan from the second column. Now we will give our services instances names, this is what our applications will use to connect to them. For the purpooses of this lab we have already picked out names for you, however you may use whatever names you\u0026rsquo;d like the future.\ncf create-service p-mysql free traderdb cf create-service p-service-registry standard discovery-service cf create-service p-circuit-breaker-dashboard standard circuit-breaker-dashboard  Summary At the end of this lab, you should have an environment setup to enable you to deploy applications to Cloud Foundry. You will also have the code required for the rest of the labs.\n"
+},
+{
+	"uri": "/concepts/cloud-native-slide/",
+	"title": "",
+	"tags": [],
+	"description": "",
+	"content": "\n "
+},
+{
+	"uri": "/demos/lab_pushquote/",
+	"title": "",
+	"tags": [],
+	"description": "",
+	"content": " Quotes Service For this lab we have provided most of the code that makes up the Quote service, while leaving a skeleton of the getQuotes method in the controller to be completed.\nGo ahead and open the quotes-service project in your favorite IDE and navitgate down to the directory src/main/java/io/pivotal/quotes. Here you can see the pieces that make up the Quotes Service we are going to edit the QuoteV1Controller.java.\nQuotes Controller As you can see here most of the code for the getQuotes method is missing. Our task for this section is to use the pieces we already have, and some knowledge about Spring annotations to complete the method.\n If at any time you want to skip ahead, you can find the completed code here  First off, let\u0026rsquo;s look at our Quote Service class found in the quotes/service folder. We have a few Strings that are hardcoded pointing to the IEX Trading\u0026rsquo;s API URL, we have three main methods getQuote, getQuotes, and getCompanyInfo. There are also three fallback methods used by Hystrix to provide failover if our three main methods should ever fail.\nBased on the principles of domain driven design, we can assume that our controller will be leveraging some or all of these main methods. (NOTE: The fallback methods are internal use only.) Looking at our QuoteV1Controller you will find the getCompanies method is already completed (1 down two to go). Let\u0026rsquo;s use that method as a template for filling the missing information to our getQuotes method.\n Another hint: We will be calling both getQuote and getQuotes inside the getQuotes controller.  We will want to do several things:\n Add the RequestMapping annotation Change the return value from null to more resemble our neighbor getCompanies Use the Request Parameter query captured in the method argument to build our calls to the service methods, again referencing getCompanies and the above null case. Remember that our one controller is going to handle either a single quote, or multiple quotes where the quotes will be comma separated.  To test your quote service, use the provided gradle wrapper and assemble it, then run it locally\n./gradlew assemble java -jar build/libs/quotes.jar  If we have completed the getQuotes correctly, we can navigate to http://localhost:8080/v1/quotes?q=FISV and we should receive a plan txt JSON response with Fiserv\u0026rsquo;s stock trading data.\nPushing the controller In Cloud Foundry vocabulary, deploying an application is referred to as pushing the application since we are uploading the application artifact to the cloud.\nMore information on the application deployment process can be found here\nThe cf push command is used for this. In fact, running this command with no parameters, the CLI will look for a file manifest.yml in the current directory. Alternatively, you can specify an application name as the parameter and the CLI will upload all files it finds in the current directory.\nApplication manifest files. Application manifests tell cf push what to do with applications. This includes everything from how many instances to create and how much memory to allocate to what services applications should use.\nA manifest can help you automate deployment, especially of multiple applications at once.\nModifying the manifest files. Since each application requires a route to be bounded to the application, and potentially there may be many instances of these services deployed, we want to ensure we have unique routes bounded to the services we deploy.\nLuckily, Pivotal Cloud Foundry allows us to assign a random-route to applications. The manifest files in the project include this option.\nExercise  Navigate to the top level quotes-service directory, you will find the manifest.yml there. Push the quote service to the cloud by specifying the specific manifest file to the cf push command. When the app has completed pushing, make sure to note down the URL from the output. We wll be using that to test our application below.  Summary Ensure you have a working quote service application by sending HTTP requests to it, put the below into your browser:\nhttp://\u0026lt;ROUTE_TO_QUOTE_SERVICE\u0026gt;/v1/quotes?q=PVTL\nEnsure the service registers itself with the registry server by looking at the discovery service dashboard. (Services - Service Registry - Manage)\nCongratulations! you have now deployed an application to the cloud that registers itself with the registry service and handles HTTP requests.\n"
+},
+{
+	"uri": "/concepts/pcf-overview-slide/",
+	"title": "",
+	"tags": [],
+	"description": "",
+	"content": "\n "
+},
+{
+	"uri": "/demos/lab_pushall/",
+	"title": "",
+	"tags": [],
+	"description": "",
+	"content": " The Other Services In this exercise, we will be deploying all the applications in the project to the cloud and create all required services. For each of these services we will examine their manifests before we push.\n1. Quote service We have already deployed the quote service in the previous lab, so nothing to do here.\n2. Accounts service Navigate to the accounts-service directory, run the gradle wrapper assemble command, then cf push.\n3. Portfolio service The portfolio service has a dependency on 3 services:\n A RDBMS. The quote service. The Account service.  The portfolio service also connects to the quote and account service. We are using a registry service to automatically and dynamically discover the other services. The other services are discovered automatically use the discovery service.\nDo the same for portfolio that you did for account.\n4. Web service The Web service is the UI front-end and also acts as an API aggregator. As such, it uses all the other microservices in the project, i.e. The quote, account and portfolio services.\nSimilarly to above, we will be using the registry service to retrieve information about these microservices.\n5. User service The User service is the provides a user repository and authorization api.\nSummary You just pushed each application individually, however they are all designed to work with each other, so wouldn\u0026rsquo;t it be nice to be able to deployment them all together, at the same time?\n How could you push all the services in one go? The Cloud Foundry manifest file allows us to define multiple applications in a single file\n Once completed, go to the URL of the Web service in your browser.\nCongratulations! You have now deployed a set of microservices to the cloud that interact with each other.\n"
+},
+{
+	"uri": "/concepts/apptx-slide/",
+	"title": "",
+	"tags": [],
+	"description": "",
+	"content": "\n "
+},
+{
+	"uri": "/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/",
+	"title": "Pivotal Workshop",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
